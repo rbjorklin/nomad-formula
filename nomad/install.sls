@@ -134,15 +134,6 @@ nomad-install-binary:
 nomad-install-service:
   file.managed:
     - name: /etc/systemd/system/nomad.service
-    - source: https://raw.githubusercontent.com/hashicorp/nomad/v{{ nomad.version }}/dist/systemd/nomad.service
-    - source_hash: {{ nomad.service_hash }}
-    - onchanges:
-      - nomad-install-binary
-  module.run:
-    - name: service.systemctl_reload
-    - onchanges:
-      - file: nomad-install-service
+    - source: salt://{{ slspath }}/files/nomad.service.j2
+    - template: jinja
 {% endif %}
-
-
-

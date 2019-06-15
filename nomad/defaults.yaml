@@ -4,9 +4,8 @@
 
 nomad:
   bin_dir: '/usr/bin'
-  config_dir: '/etc/nomad'
-  version: '0.8.7'
-  service_hash: fdc512a9e7e6a55303f12d4405676ec7c8116af6
+  config_dir: '/etc/nomad.d'
+  version: '0.9.3'
   service: True
   build: False
   config:
