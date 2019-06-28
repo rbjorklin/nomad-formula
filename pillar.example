@@ -6,35 +6,23 @@ nomad:
   config:
     data_dir: /var/lib/nomad
     # Nodes not bound to consul must be configured to advertise themselves.
-    advertise:
-      http: "{%- for interface, ips in grains['ip4_interfaces'].items()
+    bind_addr: "{%- for interface, ips in grains['ip4_interfaces'].items()
                   if interface not in ['lo', 'cni0', 'docker0'] and
                   not interface.startswith('veth') and
                   ips|length > 0 %}
                   {%- if loop.first %}
                     {{- ips[0] -}}
                   {%- endif %}
-             {%- endfor %}"
-      rpc: "{%- for interface, ips in grains['ip4_interfaces'].items()
-                  if interface not in ['lo', 'cni0', 'docker0'] and
-                  not interface.startswith('veth') and
-                  ips|length > 0 %}
-                  {%- if loop.first %}
-                    {{- ips[0] -}}
-                  {%- endif %}
-            {%- endfor %}"
-      serf: "{%- for interface, ips in grains['ip4_interfaces'].items()
-                  if interface not in ['lo', 'cni0', 'docker0'] and
-                  not interface.startswith('veth') and
-                  ips|length > 0 %}
-                  {%- if loop.first %}
-                    {{- ips[0] -}}
-                  {%- endif %}
-             {%- endfor %}"
+                {%- endfor %}"
     server:
       enabled: True
       bootstrap_expect: 1
       encrypt: "AaABbB+CcCdDdEeeFFfggG=="
+      server_join:
+        retry_join:
+        {% for _, addrs in salt.saltutil.runner('mine.get', tgt='*', fun='network.ip_addrs') | dictsort() %}
+          - {{ addrs[0] }}
+        {% endfor %}
     client:
       enabled: True
 # Sample configuration for a Consul deployment:
