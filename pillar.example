@@ -18,11 +18,11 @@ nomad:
       enabled: True
       bootstrap_expect: 1
       encrypt: "AaABbB+CcCdDdEeeFFfggG=="
-      server_join:
-        retry_join:
-        {% for _, addrs in salt.saltutil.runner('mine.get', tgt='*', fun='network.ip_addrs') | dictsort() %}
-          - {{ addrs[0] }}
-        {% endfor %}
+      #server_join:
+      #  retry_join:
+      #  {% for _, addrs in salt.saltutil.runner('mine.get', tgt='*', fun='network.ip_addrs') | dictsort() %}
+      #    - {{ addrs[0] }}
+      #  {% endfor %}
     client:
       enabled: True
 # Sample configuration for a Consul deployment:
