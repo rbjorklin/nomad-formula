@@ -5,7 +5,7 @@
 nomad:
   bin_dir: '/usr/bin'
   config_dir: '/etc/nomad.d'
-  version: '0.9.3'
+  version: '0.9.5'
   service: True
   build: False
   config:
